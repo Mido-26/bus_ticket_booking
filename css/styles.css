@@ -1,0 +1,135 @@
+@font-face {
+    font-family: 'Roboto Slab';
+    src: url('../fonts/RobotoSlab.ttf') format('truetype');
+    font-weight: 300;
+}
+:root {
+    --primary-color: #131842;
+    --text-color: #ECCEAE;
+    --font:"Roboto Slab", serif;
+}
+
+body {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: var(--font);
+    font-optical-sizing: auto;
+}
+
+.container-fluid.body {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-family: var(--font);
+}
+
+.container {
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 100px;
+    /* justify-content: ; */
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.nav {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+    border-bottom: 2px dashed var(--text-color);
+}
+
+.nav img.logo {
+    height: 40px;
+    border-color: transparent;
+    backdrop-filter: blur(1.0);
+}
+
+.title {
+    text-align: center;
+    color: var(--text-color);
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 25px;
+    font-style: light;
+}
+
+.sector {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 780px;
+    padding: 20px;
+    background-color: #fff;
+    color: var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    /* flex-direction: ; */
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+}
+.day{
+    font-weight: 600;
+}
+.btn {
+    float: right;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+}
+i.arrow{
+    color: var(--primary-color);
+    font-size: 12px;
+}
+
+.form-control.route{
+    margin-top:0;
+    padding: 1px 5px;
+    height: 50px;
+}
+
+.route h3{
+    font-size: 1px;
+    font-family: inherit;
+    padding-bottom: 5px;
+    font-weight: 600;
+    font-style: italic;
+}
+.form.sector{
+    padding: 7px;
+    color: #333;
+    justify-content: space-between;
+}
