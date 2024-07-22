@@ -1,7 +1,7 @@
 <?php
 require_once 'conn.php';
 
-$sql = "SELECT id, origin, destination FROM route";
+$sql = "SELECT id, origin, destination FROM route ORDER BY origin ASC";
 $result = mysqli_query($conn, $sql);
 $routes = array();
 

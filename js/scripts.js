@@ -18,7 +18,7 @@ $(document).ready(function () {
 
     // get date function
     function getTodayDate(date) {
-        let month = date.getMonth() + 1; 
+        let month = date.getMonth() + 1;
         let day = date.getDate();
         let year = date.getFullYear();
 
@@ -30,35 +30,126 @@ $(document).ready(function () {
         }
 
         let formattedDate = year + '-' + month + '-' + day;
+        let newdate = day + '/' + month + '/' + year;
         let dayOfWeek = date.toLocaleString('en-US', { weekday: 'long' });
 
-        return [formattedDate, dayOfWeek];
+        return [formattedDate, dayOfWeek, newdate];
     }
 
     // Routes Submition Form
     $('.form').on('submit', function (event) {
-        event.preventDefault(); 
-        var from = $('#from').val().trim();
-        var to = $('#to').val().trim();
-        var date = $('#date').val().trim();
+        event.preventDefault();
+        var from = $('#from').val();
+        var to = $('#to').val();
+        var date = $('#date').val();
+        var day = $('.day').val();
 
-        alert(from);
-        alert(to);
-        alert(date);
-
-        routeValidation(from, to, date);
+        routeValidation(from, to, date, day);
     });
 
     // Route Validation Function
-    function routeValidation(from, to, date) {
+    function routeValidation(from, to, date, day) {
         var mydate = new Date(date);
-        let day = mydate.getDay();
+        let today = new Date();
+        let valid = true;
+        today.setHours(0, 0, 0, 0);
+        mydate.setHours(0, 0, 0, 0);
 
-        // Add your validation logic here
+        if ($('#to').val() == "0") {
+            $('#to').addClass('is-invalid');
+            valid = false;
+            return;
+        } else {
+            $('#to').removeClass('is-invalid');
+        }
+
+        if ($('#from').val() == "0") {
+            $('#from').addClass('is-invalid');
+            valid = false;
+            return;
+        } else {
+            $('#from').removeClass('is-invalid');
+        }
         if (!from || !to || isNaN(mydate)) {
             alert("Please fill all fields correctly.");
-        } else {
-            alert("Validation successful!");
+            valid = false;
+            return;
         }
+
+        if (mydate < today) {
+            alert("Choose valid Date");
+            $('#date').addClass('is-invalid');
+            valid = false;
+            return;
+        } else {
+            $('#date').removeClass('is-invalid');
+        }
+        if (valid) {
+            let datef = new Date(date);
+            let formatdate = getTodayDate(datef)
+            $('.bbt').removeClass('d-none');
+            $('.inp').addClass('d-none');
+            $('.fro').text('');
+            $('.fro').text(from);
+            $('.ot').text('');
+            $('.ot').text(to);
+            $('.dy').text('');
+            $('.dy').text(formatdate[1]);
+            $('.dat').text('');
+            $('.dat').text(formatdate[2]);
+            $('.form.sector').removeClass('d-none');
+
+
+            $.ajax({
+                url: 'api/fetch_bus_list.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // response = JSON.parse(response);
+                    from = from.toLowerCase();
+                    to = to.toLowerCase();
+                    // alert(from + ' ' + to)
+                    let filteredData = response.filter(item => item.origin.toLowerCase() == from && item.destination.toLowerCase() == to);
+                    console.log(filteredData);
+                    populateBusListin(filteredData)
+                }
+            });
+            // alert("Validation successful!");
+        }
+
     }
+
+    function populateBusListin(businfo) {
+        $('.bus-container').addClass('d-none');
+        const busContainer = $('.bus-container');
+        const busTemplate = document.getElementById('buslists').content;
+        busContainer.empty();
+
+        $('.bbt').addClass('d-none');
+        $('.inp').removeClass('d-none');
+
+        businfo.forEach(info => {
+            // console.log(info)
+            const busClone = document.importNode(busTemplate, true);;
+            busClone.querySelector('.bus-name').textContent = info.busName;
+            busClone.querySelector('.f-rom').textContent = info.origin;
+            busClone.querySelector('.t-o').textContent = info.destination;
+            busClone.querySelector('.bus-no').textContent = info.busNo;
+            busClone.querySelector('.seatType').textContent = info.seatTypeName;
+            busClone.querySelector('.bus-model').textContent = info.busModel;
+            busClone.querySelector('.pickLocation').textContent = ' '+info.pickupLocation;
+            busClone.querySelector('.dropLocation').textContent = ' '+info.dropLocation
+            busClone.querySelector('.depart strong').textContent = info.DepartureTime;
+            busClone.querySelector('.time small').textContent = ''
+            busClone.querySelector('.availb-seat .seat').textContent = info.seatCapacity+ ' ';
+            busClone.querySelector('.price strong').textContent = info.Price;
+            busClone.querySelector('.booking').id = info.id;
+            busClone.querySelector('.destiniy strong').textContent = info.ETA;
+            // busClone.querySelector('.destiniy').textContent = ''
+
+            busContainer.append(busClone);
+        });
+        $('.bus-container').removeClass('d-none');
+    }
+
 });

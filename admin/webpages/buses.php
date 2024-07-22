@@ -18,18 +18,18 @@
                         <div class="mb-3">
                             <label for="busName" class="form-label">Bus Name</label>
                             <input type="text" class="form-control" id="busName" name="busName" required>
-                            <div class="invalid-feedback">Please enter the bus name.</div>
+                            <div class="invalid-feedback ">Please enter the bus name.</div>
                         </div>
                         <div class="mb-3">
                             <label for="busNo" class="form-label">Bus Number</label>
                             <input type="text" class="form-control" id="busNo" name="busNo" required>
                             <div class="invalid-feedback">Please enter the bus number.</div>
                         </div>
-                        <!-- <div class="mb-3">
-                            <label for="busOwner" class="form-label">Bus Owner</label>
-                            <input type="text" class="form-control" id="busOwner" name="busOwner" required>
-                            <div class="invalid-feedback">Please enter the bus owner.</div>
-                        </div> -->
+                        <div class="mb-3">
+                            <label for="busOwner" class="form-label">Bus Model</label>
+                            <input type="text" class="form-control" id="busModel" name="busModel" required>
+                            <div class="invalid-feedback">Please enter the bus Model.</div>
+                        </div>
                         <div class="mb-3">
                             <label for="seatCapacity" class="form-label">Seat Capacity</label>
                             <input type="number" class="form-control" id="seatCapacity" name="seatCapacity" required>
@@ -98,7 +98,7 @@
             success: function(data) {
                 let routeSelect = $('#routeId');
                 $.each(data, function(index, route) {
-                    routeSelect.append('<option value="' + route.id + '">' + route.origin + ' to ' + route.destination + '</option>');
+                    routeSelect.append('<option value="' + route.id + '">' + route.origin + ' to ' + route.destination + ' via ' + route.via + ' '+ route.seatTypeName +'</option>');
                 });
             }
         });

@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $seatCapacity = intval($_POST['seatCapacity']);
     $routeId = intval($_POST['routeId']);
     $features = $_POST['features'];
+    $busModel = addslashes($_POST['busModel']);
 
     // Check if the bus number already exists
     $checkBusSql = "SELECT * FROM bus WHERE busNo = '$busNo'";
@@ -18,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Insert new bus
-    $sql = "INSERT INTO bus (busName, busNo, seatCapacity, RouteId) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO bus (busName, busNo, seatCapacity, RouteId, busModel) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ssii', $busName, $busNo, $seatCapacity, $routeId);
+    $stmt->bind_param('ssiis', $busName, $busNo, $seatCapacity, $routeId, $busModel);
 
     if ($stmt->execute()) {
         $last_id = $stmt->insert_id;

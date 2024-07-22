@@ -7,15 +7,16 @@ $(document).ready(function () {
         dataType: 'json',
         success: function (data) {
             dataArray = data;
-            let routeSelect = $('#Route-list');
+            console.log(dataArray);
+            let routeSelect = $('#from');
             let existingOptions = {};
             routeSelect.empty();
+            routeSelect.append('<option value="0">-- Chagua Mwanzo Wa Safari --</option>');
 
-            // Iterate through each route in the data
+            // Populate the "from" dropdown with unique origins
             $.each(data, function (index, route) {
                 let origin = route.origin;
 
-                // Check if origin is not already an option
                 if (!existingOptions[origin]) {
                     let option = $('<option>', {
                         value: origin,
@@ -25,32 +26,38 @@ $(document).ready(function () {
                     existingOptions[origin] = true;
                 }
             });
+
+            // Change event listener for "from" dropdown
             $('#from').on('change', function () {
-                let from = $(this).val();
-                let filteredata = dataArray.filter(item => item.origin.toLowerCase() === from);
+                let from = $(this).val().toLowerCase();
+                console.log("Selected from:", from);
+                let filteredData = data.filter(item => item.origin.toLowerCase() == from);
+
+                console.log("Filtered data:", filteredData);
 
                 let toSelect = $('#to');
                 let Options = {};
-                // toSelect.empty();
+                toSelect.empty();
+                toSelect.append('<option value="0">-- Select Destination --</option>');  // Add default option
 
-                $.each(filteredata, function (index, route) {
-                    let origin = route.destination;
+                // Populate the "to" dropdown with destinations
+                $.each(filteredData, function (index, route) {
+                    let destination = route.destination;
 
-                    if (!Options[origin]) {
+                    if (!Options[destination]) {
                         let option = $('<option>', {
-                            value: origin,
-                            text: origin
+                            value: destination,
+                            text: destination
                         });
                         toSelect.append(option);
-                        Options[origin] = true;
+                        Options[destination] = true;
                     }
                 });
-                // alert(from); 
             });
         },
         error: function (xhr, status, error) {
-            alert('Error fetching routes:', status, error)
             console.error('Error fetching routes:', status, error);
+            alert('Error fetching routes. Please try again later.');
         }
     });
 });

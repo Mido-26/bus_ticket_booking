@@ -1,7 +1,7 @@
 <?php
 require_once 'conn.php';
 
-$sql = "SELECT id, origin, destination FROM route";
+$sql = "SELECT r.* , s.seatTypeName  FROM route r LEFT JOIN seat_type s ON (s.id = r.seat_id)";
 $result = mysqli_query($conn, $sql);
 $routes = array();
 
