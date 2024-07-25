@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Seat Reservation System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .seating-area {
+            width: 40%;
+            border-right: 1px solid #ccc;
+            padding-right: 20px;
+        }
+
+        .seating-chart {
+            display: grid;
+            grid-gap: 10px;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            background-color: green;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .seat.sold {
+            background-color: red;
+            cursor: not-allowed;
+        }
+
+        .seat.selected {
+            background-color: blue;
+        }
+
+        .legend {
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .legend-item .seat {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6 seating-area">
+                <div class="form-group">
+                    <label for="numRows">Number of Rows</label>
+                    <input type="number" class="form-control" id="numRows" min="1" placeholder="Enter number of rows">
+                </div>
+                <div class="form-group">
+                    <label for="numCols">Number of Columns</label>
+                    <input type="number" class="form-control" id="numCols" min="1" placeholder="Enter number of columns">
+                </div>
+                <button class="btn btn-primary mb-4" id="generateSeating">Generate Seating</button>
+                <div class="seating-chart" id="seatingChart"></div>
+                <div class="legend">
+                    <div class="legend-item"><span class="seat available"></span> Available</div>
+                    <div class="legend-item"><span class="seat sold"></span> Sold</div>
+                    <div class="legend-item"><span class="seat selected"></span> Selected</div>
+                </div>
+            </div>
+            <div class="col-md-6 reservation-details">
+                <div class="form-group">
+                    <label for="boardingPoint">Boarding Point</label>
+                    <select class="form-control" id="boardingPoint">
+                        <option>Boarding point</option>
+                        <!-- Add more options here -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="droppingPoint">Dropping Point</label>
+                    <select class="form-control" id="droppingPoint">
+                        <option>Dropping point</option>
+                        <!-- Add more options here -->
+                    </select>
+                </div>
+                <div class="total">
+                    <h5>Total: <span id="totalAmount">TZS 0.00</span></h5>
+                </div>
+                <button class="btn btn-primary" id="continueButton">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+     <script src="../js/jquery-3.7.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let totalAmount = 0;
+            const seatPrice = 10000; // TZS
+
+            // Simulated sold seats fetched from a database
+            const soldSeats = [1, 5, 9, 13, 17, 21, 25, 29, 33, 37];
+
+            $('#generateSeating').on('click', function() {
+                const rows = parseInt($('#numRows').val());
+                const cols = parseInt($('#numCols').val());
+
+                if (!rows || !cols) {
+                    alert('Please enter valid numbers for rows and columns');
+                    return;
+                }
+
+                const seatingChart = $('#seatingChart');
+                seatingChart.empty();
+                seatingChart.css('grid-template-columns', `repeat(${cols + 1}, 50px)`);
+
+                for (let k = 0; k < rows; k++) {
+                    for (let j = 0; j < cols; j++) {
+                        if (j === Math.floor(cols / 2)) {
+                            seatingChart.append('<div></div>'); // Add an empty div for the aisle
+                        }
+                        const seatNumber = k * cols + (j + 1);
+                        const seatClass = soldSeats.includes(seatNumber) ? 'sold' : 'available';
+                        seatingChart.append(`<div class="seat ${seatClass}" data-seat="${seatNumber}">${seatNumber}</div>`);
+                    }
+                }
+            });
+
+            // Handle seat selection
+            $('#seatingChart').on('click', '.seat.available', function() {
+                $(this).toggleClass('selected');
+                updateTotal();
+            });
+
+            function updateTotal() {
+                const selectedSeats = $('.seat.selected').length;
+                totalAmount = selectedSeats * seatPrice;
+                $('#totalAmount').text(`TZS ${totalAmount.toFixed(2)}`);
+            }
+
+            $('#continueButton').on('click', function() {
+                alert(`Total amount to pay: TZS ${totalAmount.toFixed(2)}`);
+            });
+        });
+    </script>
+</body>
+</html>

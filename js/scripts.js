@@ -114,42 +114,56 @@ $(document).ready(function () {
                     populateBusListin(filteredData)
                 }
             });
-            // alert("Validation successful!");
         }
 
     }
 
     function populateBusListin(businfo) {
+
         $('.bus-container').addClass('d-none');
+        $('.em-e').addClass('d-none');
         const busContainer = $('.bus-container');
         const busTemplate = document.getElementById('buslists').content;
         busContainer.empty();
 
-        $('.bbt').addClass('d-none');
-        $('.inp').removeClass('d-none');
+        if (businfo.length > 0) {
 
-        businfo.forEach(info => {
-            // console.log(info)
-            const busClone = document.importNode(busTemplate, true);;
-            busClone.querySelector('.bus-name').textContent = info.busName;
-            busClone.querySelector('.f-rom').textContent = info.origin;
-            busClone.querySelector('.t-o').textContent = info.destination;
-            busClone.querySelector('.bus-no').textContent = info.busNo;
-            busClone.querySelector('.seatType').textContent = info.seatTypeName;
-            busClone.querySelector('.bus-model').textContent = info.busModel;
-            busClone.querySelector('.pickLocation').textContent = ' '+info.pickupLocation;
-            busClone.querySelector('.dropLocation').textContent = ' '+info.dropLocation
-            busClone.querySelector('.depart strong').textContent = info.DepartureTime;
-            busClone.querySelector('.time small').textContent = ''
-            busClone.querySelector('.availb-seat .seat').textContent = info.seatCapacity+ ' ';
-            busClone.querySelector('.price strong').textContent = info.Price;
-            busClone.querySelector('.booking').id = info.id;
-            busClone.querySelector('.destiniy strong').textContent = info.ETA;
-            // busClone.querySelector('.destiniy').textContent = ''
+            businfo.forEach(info => {
 
-            busContainer.append(busClone);
-        });
+                const busClone = document.importNode(busTemplate, true);
+                busClone.querySelector('.bus-name').textContent = info.busName;
+                busClone.querySelector('.f-rom').textContent = info.origin;
+                busClone.querySelector('.t-o').textContent = info.destination;
+                busClone.querySelector('.bus-no').textContent = info.busNo;
+                busClone.querySelector('.seatType').textContent = info.seatTypeName;
+                busClone.querySelector('.bus-model').textContent = info.busModel;
+                busClone.querySelector('.pickLocation').textContent = ' ' + info.pickupLocation;
+                busClone.querySelector('.dropLocation').textContent = ' ' + info.dropLocation;
+                busClone.querySelector('.depart strong').textContent = info.DepartureTime;
+                busClone.querySelector('.time small').textContent = '';
+                busClone.querySelector('.availb-seat .seat').textContent = info.seatCapacity + ' ';
+                busClone.querySelector('.price strong').textContent = info.Price;
+                busClone.querySelector('.bookg').id = info.id;
+                // busClone.querySelector('.bookg').id="openModalButton"
+                busClone.querySelector('.destiniy strong').textContent = info.ETA;
+
+                busContainer.append(busClone);
+            });
+        } else {
+            $('#alert').removeClass('d-none');
+            // console.log()
+        }
         $('.bus-container').removeClass('d-none');
+        setTimeout(() => {
+
+            $('.bbt').addClass('d-none');
+            $('.inp').removeClass('d-none');
+        }, 3000);
     }
 
+    $(document).on('click', '.bookg', function (e) {
+        e.preventDefault();
+        let btn = $(this);
+        let id = btn.attr('id');
+    });
 });
