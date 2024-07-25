@@ -2,11 +2,9 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/styles.css">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/notify.css">
     <link rel="stylesheet" href="css/all.min.css">
@@ -41,7 +39,7 @@
         }
 
         .seat.selected {
-            background-color: blue;
+            background-color: var(--primary-color);
         }
 
         .legend {
@@ -67,7 +65,7 @@
             <img src="Assets/logo.png" alt="Logo" class="logo">
         </nav>
         <div class="container">
-            <h1 class="mt-1 title">Bus Ticket Booking</h1>
+            <h1 class="mt-1 title fs-2 fw-bolder">TicketFasta</h1>
             <section class="mt-3 px-2 sector">
                 <form action="" class="form form-group">
                     <div class="form-control">
@@ -84,16 +82,13 @@
                         <label for="date">Travel Date:</label>
                         <input type="date" class="form-control custom-date" name="date" id="date" required>
                         <div class="d-flex justify-content-between mt-1 ">
-                            <h3 class="day">
-
-                            </h3>
+                            <h3 class="day"></h3>
                             <input type="submit" id="btn" class="btn btn-primary mt-2 mb-2 inp" value="Search">
-                            <button class="btn btn-primary d-none bbt" type="button" disabled="">
+                            <button class="btn btn-primary d-none bbt" type="button" disabled>
                                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                 <span role="status">Search</span>
                             </button>
                         </div>
-
                     </div>
                 </form>
             </section>
@@ -111,7 +106,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="seatModalLabel"></h5>
+                            <h5 class="modal-title fs-3 fw-bolder" id="seatModalLabel"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -125,9 +120,7 @@
                                 </div>
                                 <div class="seating-chart  border p-1" id="seatingChart"></div>
                             </div>
-                            <div class="modalInfoBody">
-
-                            </div>
+                            <div class="modalInfoBody"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -137,8 +130,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
     <template id="buslists">
@@ -177,12 +168,10 @@
                     </div>
                     <div class="booking d-flex flex-column justify-content-evenly align-items-center gap-2">
                         <div class="price">
-                            <strong> </strong>
+                            <strong></strong>
                         </div>
                         <button type="button" class="btn btn-primary gap-1 bookg openModalButton">
                             <span><i class="fa fa-ticket" aria-hidden="true"> </i></span><span> Book</span>
-                        </button>
-
                         </button>
                     </div>
                 </div>
@@ -191,7 +180,6 @@
     </template>
     <div id="toast-box"></div>
     <script src="js/jquery-3.7.1.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script> -->
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/scripts.js"></script>
     <script src="js/notification.js"></script>

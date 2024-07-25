@@ -39,7 +39,8 @@ $(document).ready(function () {
         seatingChart.empty();
         seatingChart.css('grid-template-columns', `repeat(${cols + 1}, 50px)`);
 
-        const soldSeats = info.sold ?? [];
+        const soldSeats = (info.sold ?? []).map(Number);
+        console.log(soldSeats)
         console.log("Total seats: ", totalSeats);
         console.log("Columns: ", cols);
         console.log("Rows: ", rows);
