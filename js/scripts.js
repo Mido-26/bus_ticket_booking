@@ -30,7 +30,7 @@ $(document).ready(function () {
         return [formattedDate, dayOfWeek, newdate];
     }
 
-    $('.form').on('submit', function (event) {
+    $('section form').on('submit', function (event) {
         event.preventDefault();
         let from = $('#from').val();
         let to = $('#to').val();
@@ -102,8 +102,8 @@ $(document).ready(function () {
     }
 
     function populateBusListin(businfo, travelDate) {
-        $('.bus-container').addClass('d-none');
-        $('.em-e').addClass('d-none');
+        $('.bus-container').addClass('d-none');        
+        $('#alert').removeClass('d-none');
         const busContainer = $('.bus-container');
         const busTemplate = document.getElementById('buslists').content;
         busContainer.empty();
@@ -146,14 +146,16 @@ $(document).ready(function () {
                 }
             });
         } else {
-            $('#alert').removeClass('d-none');
+            
+        $('.em-e').addClass('d-none');
         }
 
-        $('.bus-container').removeClass('d-none');
+       
         setTimeout(() => {
+            $('.bus-container').removeClass('d-none');
             $('.bbt').addClass('d-none');
             $('.inp').removeClass('d-none');
-        }, 3000);
+        }, 500);
     }
 
     $(document).on('click', '.bookg', function (e) {

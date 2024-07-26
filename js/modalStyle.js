@@ -1,11 +1,13 @@
 $(document).ready(function () {
     let data = [];
     let seatPrice = 0;
+    let totalAmount = 0;
 
+    // Handle modal opening and fetching bus data
     $(document).on('click', '.openModalButton', function () {
         $('#seatModal').modal('show');
         let id = $(this).attr('id');
-        
+
         $.ajax({
             url: 'api/fetch_bus_list.php',
             method: 'GET',
@@ -28,8 +30,7 @@ $(document).ready(function () {
         });
     });
 
-    let totalAmount = 0;
-
+    // Generate seat layout
     function generateSeats(info) {
         const totalSeats = parseInt(info.seatCapacity);
         const cols = parseInt(info.columns);
@@ -40,7 +41,6 @@ $(document).ready(function () {
         seatingChart.css('grid-template-columns', `repeat(${cols + 1}, 50px)`);
 
         const soldSeats = (info.sold ?? []).map(Number);
-        console.log(soldSeats)
         console.log("Total seats: ", totalSeats);
         console.log("Columns: ", cols);
         console.log("Rows: ", rows);
@@ -48,10 +48,10 @@ $(document).ready(function () {
 
         for (let k = 0; k < rows; k++) {
             for (let j = 0; j < cols; j++) {
-                if (j === Math.floor(cols / 2) && rows - k !== 1) {
+                const seatNumber = k * cols + (j + 1);
+                if (j === Math.floor(cols / 2) && totalSeats - seatNumber >=(cols+ 1)) {
                     seatingChart.append('<div></div>'); // Add an empty div for the aisle
                 }
-                const seatNumber = k * cols + (j + 1);
                 if (seatNumber <= totalSeats) {
                     const seatClass = soldSeats.includes(seatNumber) ? 'sold' : 'available';
                     seatingChart.append(`<div class="seat ${seatClass}" data-seat="${seatNumber}">${seatNumber}</div>`);
@@ -66,14 +66,25 @@ $(document).ready(function () {
         updateTotal();
     });
 
+    // Update total amount based on selected seats
     function updateTotal() {
         const selectedSeats = $('.seat.selected').length;
         totalAmount = selectedSeats * seatPrice;
         $('#totalAmount').text(`TZS ${totalAmount.toFixed(2)}`);
     }
 
+    // Handle reservation confirmation
     $('#continueButton').on('click', function () {
-        alert(`Total amount to pay: TZS ${totalAmount.toFixed(2)}`);
-        $('#seatModal').modal('hide');
+        const selectedSeats = [];
+        $('.seat.selected').each(function () {
+            selectedSeats.push($(this).data('seat'));
+            $(this).removeClass('selected').addClass('occupied');
+        });
+        if (selectedSeats.length > 0) {
+            alert('Reserved seats: ' + selectedSeats.join(', '));
+            $('#seatModal').modal('hide');
+        } else {
+            alert('No seats selected.');
+        }
     });
 });

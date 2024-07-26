@@ -39,7 +39,8 @@
         }
 
         .seat.selected {
-            background-color: var(--primary-color);
+            /* background-color: var(--primary-color); */
+            background-color: #ccc;
         }
 
         .legend {
@@ -65,9 +66,9 @@
             <img src="Assets/logo.png" alt="Logo" class="logo">
         </nav>
         <div class="container">
-            <h1 class="mt-1 title fs-2 fw-bolder">TicketFasta</h1>
+            <h1 class="mt-1 title fs-3 fw-bold">TicketFasta</h1>
             <section class="mt-3 px-2 sector">
-                <form action="" class="form form-group">
+                <form action="" class="d-flex gap-2 justify-content-center align-items-center form-group">
                     <div class="form-control">
                         <label for="from">From:</label>
                         <select name="from" id="from" class="form-control" placeholder="Enter Departure City" required>
@@ -98,18 +99,17 @@
                 <div>Date: <span class="dat"></span></div>
             </section>
             <section class="d-flex flex-column gap-1 justify-content-start align-items-center mt-2 px-1 bus-container mb-4">
-                <div class="alert alert-danger px-1  em-e" role="alert" id="alert">
+                <div class="alert alert-danger px-1 em-e d-none" role="alert" id="alert">
                     No Buses for the route Choosed Try again
                 </div>
             </section>
+
             <div class="modal fade" id="seatModal" tabindex="-1" role="dialog" aria-labelledby="seatModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title fs-3 fw-bolder" id="seatModalLabel"></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body w-100 d-flex justify-content-start align-items-center gap-2">
                             <div class="modalHeader  w-40 d-flex flex-column justify-content-start align-items-center gap-2">
@@ -123,7 +123,7 @@
                             <div class="modalInfoBody"></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <!-- <button type="button" class="btn-close btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button> -->
                             <button type="button" class="btn btn-primary" id="continueButton">Continue</button>
                         </div>
                     </div>
@@ -133,13 +133,13 @@
     </div>
 
     <template id="buslists">
-        <div class="sector d-flex flex-column justify-content-center align-items-center shadow p-1 bus-row fadeIn">
+        <div class="sector d-flex flex-column justify-content-center align-items-center shadow p-1 bus-row fadeIn bzz">
             <div class="bus-header d-flex justify-content-start align-items-center w-100 gap-3 px-2">
-                <h5 class="font-weight-bold color-p bus-name ">Ratco Exp</h5>
-                <span class="seatType fw-bolder fs-6"></span>
+                <h5 class="fw-bold color-p bus-name ">Ratco Exp</h5>
+                <span class="seatType fw-bold fs-6"></span>
             </div>
             <div class="bus-info d-flex justify-content-between align-items-center px-1 gap-3 w-100">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column w-100">
                     <p class="m-1"><span class="f-rom">Dar Es Salam</span> &rarr; <span class="t-o">Tanga</span></p>
                     <p class="m-1"><strong class="bus-no">T 267 EDF</strong></p>
                     <p class="m-1 bus-model"></p>
@@ -155,19 +155,19 @@
                     </div>
                     <div class="time">
                         <strong class="d-flex gap-1"><i class="fa-solid fa-map-pin fa-rotate-270"></i><i class="fa-solid fa-clock"></i><i class="fa-solid fa-map-pin fa-rotate-90"></i></strong>
-                        <small class="text-danger font-weight-bold"></small>
+                        <small class="text-danger fw-bold"></small>
                     </div>
                     <div class="destiniy">
                         <strong>23:30 PM</strong><br>
                         <small class="text-muted">Arrival Time</small>
                     </div>
                 </div>
-                <div class="d-flex gap-2">
-                    <div class="availb-seat">
+                <div class="d-flex gap-2 p-2">
+                    <div class="availb-seat d-flex justify-content-center align-items-center flex-column gap-1 p-1">
                         <span class="seat"></span><span class="text-muted">Available Seats</span>
                     </div>
-                    <div class="booking d-flex flex-column justify-content-evenly align-items-center gap-2">
-                        <div class="price">
+                    <div class="booking d-flex flex-column justify-content-center align-items-center gap-2">
+                        <div class="price fw-bold fs-5">
                             <strong></strong>
                         </div>
                         <button type="button" class="btn btn-primary gap-1 bookg openModalButton">
@@ -182,9 +182,43 @@
     <script src="js/jquery-3.7.1.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/mediaq-q-s.js"></script>
     <script src="js/notification.js"></script>
     <script src="js/getBuslist.js"></script>
     <script src="js/modalStyle.js"></script>
+    <script>
+        $(function() {
+            $(document).ready(function() {
+                function applyTabletClasses() {
+                    if (window.matchMedia("(min-width: 780px) and (max-width: 1024px)").matches) {
+                        $('section form').removeClass('flex-column');
+                        $('.bus-info').removeClass('flex-column');
+                        $('.sector.bzz').removeClass('buss-row').addClass('bus-row');
+                        $('.bus-header').removeClass('colorr');
+                        $('.bus-info div').removeClass('justify-content-start align-items-start');
+                        $('.modal-body').removeClass('flex-column');
+                    } else if (window.matchMedia("(max-width: 780px)").matches) {
+                        $('section form').addClass('flex-column');
+                        $('.bus-info').addClass('flex-column');
+                        $('.sector.bzz').removeClass('bus-row').addClass('buss-row');
+                        $('.bus-header').addClass('colorr');
+                        $('.bus-header h5').removeClass('color-p');
+                        $('.bus-info div').addClass('justify-content-between align-items-start');
+                        $('.modal-body').addClass('flex-column');
+                    }
+                }
+
+                // Initial check
+                applyTabletClasses();
+
+                // Handle window resize
+                $(window).resize(function() {
+                    applyTabletClasses();
+                });
+            });
+
+        })
+    </script>
 </body>
 
 </html>

@@ -33,8 +33,6 @@ body {
 }
 
 .container-fluid.body {
-    /* background-color: var(--primary-color) !important; */
-    /* color: var(--text-color) !important;  */
     width: 100%;
     min-height: 100% !important;
     display: flex;
@@ -89,13 +87,14 @@ ul{
     font-family: inherit;
     font-weight: 500;
     font-size: 25px;
-    font-style: light;
+    font-style: italic;
+    
 }
 
 .sector {
     margin-top: 30px;
     width: 100%;
-    max-width: 780px;
+    max-width: 750px;
     padding: 20px;
     background-color: #fff;
     color: var(--primary-color);
@@ -124,6 +123,11 @@ ul{
     color: var(--text-color);
     background-color: var(--primary-color);
 }
+.btn-primary{
+    color: var(--text-color) !important;
+    background-color: var(--primary-color) !important;
+}
+
 i.arrow{
     color: var(--primary-color);
     font-size: 12px;
@@ -156,14 +160,20 @@ i.arrow{
 }
 .bus-row{
     width: 100% !important;
-    min-width: 850px !important;
+    min-width: 780px !important;
+    border: 2px dashed var(--primary-color);
+    z-index: 10;  
+}
+.buss-row{
+    width: 100% !important;
+    max-width: 850px !important;
     border: 2px dashed var(--primary-color);
     z-index: 10;  
 }
 .de-time{
     border-left: 2px dashed var(--primary-color);
     border-right: 2px dashed var(--primary-color);
-    border-height: 40px;
+    /* border-height: 40px; */
 }
 .btn{
     width: 100px;
@@ -177,10 +187,12 @@ i.arrow{
     margin-left: 5px;
     margin-right: 5px;
 
-}.em-e{
-
 }
 
+.colorr{
+    color: var(--text-color) !important;
+    background-color: var(--primary-color) !important;
+}
 /* Modal style */
 #seatModal{
     color: var(--primary-color) !important;
