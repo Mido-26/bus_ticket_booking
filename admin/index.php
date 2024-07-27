@@ -18,9 +18,9 @@
         <?php
     }
     ?>
-    <div class="container d-flex justify-content-center align-items-center">
+    <div class="container d-flex justify-content-center align-items-center fff">
         <div class="form px-2 d-flex flex-column justify-content-center align-items-center">
-            <h3>Bus Ticket Booking System</h3>
+            <h3>TicketFasta System</h3>
             <form action=""  class="form-group shadow " id="Loginform">
                 <h4 >Login</h4>
                 <div class="alert alert-danger px-1 error" role="alert"  style="display: none;">
@@ -36,6 +36,7 @@
         </div>
     </div>
     <script src="../js/jquery-3.7.1.js"></script>
+    <script src="../js/mediaq-q-s.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="js/scripts.js"></script>
 </body>

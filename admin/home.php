@@ -11,7 +11,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
         <link rel="stylesheet" href="../css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/all.min.css">
         <link rel="stylesheet" href="css/admin.css">
-        <title>Dashboard</title>
+        <title>TicketFasta</title>
     </head>
 
     <body>
@@ -47,7 +47,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
                     <button class="btn btn-primary" id="menu-toggle">
                         <i class="fas fa-bars menu"></i>
                     </button>
-                    <h3 class="mx-3">Bus Ticket Booking System</h3>
+                    <h3 class="mx-3">TicketFasta</h3>
                 </nav>
                 <div class="container-fluid panel" id="dashboard">
                     <h1 class="mt-4">Dashboard</h1>

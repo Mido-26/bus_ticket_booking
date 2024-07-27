@@ -126,7 +126,8 @@ $(document).ready(function () {
                     const timeDifference = Math.abs(arrivalDateTime - departureDateTime);
                     const hoursUsed = Math.floor(timeDifference / (1000 * 60 * 60));
                     const minutesUsed = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-
+                    let avaiSeats = info.seatCapacity - info.bookedSeats;
+                    // alert(avaiSeats)
                     busClone.querySelector('.bus-name').textContent = info.busName;
                     busClone.querySelector('.f-rom').textContent = info.origin;
                     busClone.querySelector('.t-o').textContent = info.destination;
@@ -137,7 +138,12 @@ $(document).ready(function () {
                     busClone.querySelector('.dropLocation').textContent = ' ' + info.dropLocation;
                     busClone.querySelector('.depart strong').textContent = departureDateTime.toLocaleTimeString();
                     busClone.querySelector('.time small').textContent = `${hoursUsed}h ${minutesUsed}m`;
-                    busClone.querySelector('.availb-seat .seat').textContent = info.seatCapacity + ' ';
+                    busClone.querySelector('.availb-seat .seat').textContent = avaiSeats;
+                    // if (avaiSeats <= 0) {
+                    //     busClone.find('.availb-seat .seat').addClass('sold');
+                    // }else{
+                    //     busClone.find('.availb-seat .seat').removeClass('sold');
+                    // }
                     busClone.querySelector('.price strong').textContent = priceInTshs;
                     busClone.querySelector('.bookg').id = info.id;
                     busClone.querySelector('.destiniy strong').textContent = arrivalDateTime.toLocaleTimeString();

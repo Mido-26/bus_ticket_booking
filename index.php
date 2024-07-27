@@ -98,7 +98,7 @@
                 <div>Day: <span class="dy"></span></div>
                 <div>Date: <span class="dat"></span></div>
             </section>
-            <section class="d-flex flex-column gap-1 justify-content-start align-items-center mt-2 px-1 bus-container mb-4">
+            <section class="d-flex flex-column gap-5 justify-content-start align-items-center mt-5 px-1 bus-container mb-4">
                 <div class="alert alert-danger px-1 em-e d-none" role="alert" id="alert">
                     No Buses for the route Choosed Try again
                 </div>
@@ -111,16 +111,58 @@
                             <h5 class="modal-title fs-3 fw-bolder" id="seatModalLabel"></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body w-100 d-flex justify-content-start align-items-center gap-2">
-                            <div class="modalHeader  w-40 d-flex flex-column justify-content-start align-items-center gap-2">
-                                <div class="legend border fw-bold fs-6 d-flex gap-2 p-1">
-                                    <div class="legend-item "><span class="seat available"></span><span> Available</span></div>
-                                    <div class="legend-item "><span class="seat sold"></span><span>Sold</span></div>
-                                    <div class="legend-item "><span class="seat selected"></span><span>Selected</span></div>
-                                </div>
-                                <div class="seating-chart  border p-1" id="seatingChart"></div>
+                        <div class="modal-body w-100 d-flex flex-column justify-content-start align-items-center gap-2">
+                            <div class="heeda d-flex justify-content-center">
+                                <h4 class="fw-bold fs-5">Choose Seat To Book</h4>
                             </div>
-                            <div class="modalInfoBody"></div>
+                            <div class="d-flex seatinfo w-100 justify-content-between align-items-start gap-4">
+                                <div class="modalHeader  w-40 d-flex flex-column justify-content-start align-items-center gap-2">
+                                    <div class="legend border fw-bold fs-6 d-flex gap-2 p-1">
+                                        <div class="legend-item "><span class="seat available"></span><span> Available</span></div>
+                                        <div class="legend-item "><span class="seat sold"></span><span>Sold</span></div>
+                                        <div class="legend-item "><span class="seat selected"></span><span>Selected</span></div>
+                                    </div>
+                                    <div class="seating-chart  border p-1" id="seatingChart"></div>
+                                </div>
+                                <div class="modalInfoBody w-100 d-flex flex-column justify-content-center align-items-center gap-5 px-2 ">
+                                    <div class="bodyinfo w-100">
+                                        <label for="">Starting Point</label>
+                                        <input type="tel" name="" id="destin" class="form-control" readonly>
+                                        <label for="">Dropping Point</label>
+                                        <input type="tel" name="" id="dropping" class="form-control" readonly>
+                                    </div>
+                                    <div class="bookinginfo w-100 px-1">
+                                        <div class="form-control colorr">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> Passenger Info
+                                        </div>
+                                            <form id="bookingForm" novalidate>
+
+                                                <div class="mb-3">
+                                                    <label for="customerName" class="form-label">Customer Name</label>
+                                                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Enter FullName" required>
+                                                    <div class="invalid-feedback">Please enter your name.</div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="customerPhone" class="form-label">Customer Phone</label>
+                                                    <input type="tel" class="form-control" id="customerPhone" name="customerPhone" placeholder="Insert Mobile Number" required>
+                                                    <div class="invalid-feedback">Please enter your phone number.</div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="seatNumber" class="form-label">Seat Number</label>
+                                                    <input type="text" class="form-control" id="seatNumber" name="seatNumber[]" placeholder="Selected seats will appear Here" required readonly>
+                                                    <div class="invalid-feedback">Please enter a seat number.</div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="bookingDate" class="form-label">Booking Date</label>
+                                                    <input type="date" class="form-control" id="bookingDate" name="bookingDate" required readonly>
+                                                    <div class="invalid-feedback">Please select a booking date.</div>
+                                                </div>
+                                                <!-- <button type="submit" class="btn btn-primary">Book Now</button> -->
+                                            </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <!-- <button type="button" class="btn-close btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button> -->
@@ -133,7 +175,7 @@
     </div>
 
     <template id="buslists">
-        <div class="sector d-flex flex-column justify-content-center align-items-center shadow p-1 bus-row fadeIn bzz">
+        <div class="d-flex flex-column justify-content-center align-items-center shadow p-1 bus-row fadeIn bzz">
             <div class="bus-header d-flex justify-content-start align-items-center w-100 gap-3 px-2">
                 <h5 class="fw-bold color-p bus-name ">Ratco Exp</h5>
                 <span class="seatType fw-bold fs-6"></span>
@@ -162,7 +204,7 @@
                         <small class="text-muted">Arrival Time</small>
                     </div>
                 </div>
-                <div class="d-flex gap-2 p-2">
+                <div class="d-flex gap-2 p-2 ">
                     <div class="availb-seat d-flex justify-content-center align-items-center flex-column gap-1 p-1">
                         <span class="seat"></span><span class="text-muted">Available Seats</span>
                     </div>
@@ -186,39 +228,7 @@
     <script src="js/notification.js"></script>
     <script src="js/getBuslist.js"></script>
     <script src="js/modalStyle.js"></script>
-    <script>
-        $(function() {
-            $(document).ready(function() {
-                function applyTabletClasses() {
-                    if (window.matchMedia("(min-width: 780px) and (max-width: 1024px)").matches) {
-                        $('section form').removeClass('flex-column');
-                        $('.bus-info').removeClass('flex-column');
-                        $('.sector.bzz').removeClass('buss-row').addClass('bus-row');
-                        $('.bus-header').removeClass('colorr');
-                        $('.bus-info div').removeClass('justify-content-start align-items-start');
-                        $('.modal-body').removeClass('flex-column');
-                    } else if (window.matchMedia("(max-width: 780px)").matches) {
-                        $('section form').addClass('flex-column');
-                        $('.bus-info').addClass('flex-column');
-                        $('.sector.bzz').removeClass('bus-row').addClass('buss-row');
-                        $('.bus-header').addClass('colorr');
-                        $('.bus-header h5').removeClass('color-p');
-                        $('.bus-info div').addClass('justify-content-between align-items-start');
-                        $('.modal-body').addClass('flex-column');
-                    }
-                }
-
-                // Initial check
-                applyTabletClasses();
-
-                // Handle window resize
-                $(window).resize(function() {
-                    applyTabletClasses();
-                });
-            });
-
-        })
-    </script>
+    <script src="js/validateBookingForm.js"></script>
 </body>
 
 </html>

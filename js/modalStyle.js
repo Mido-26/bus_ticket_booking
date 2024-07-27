@@ -1,7 +1,6 @@
 $(document).ready(function () {
     let data = [];
-    let seatPrice = 0;
-    let totalAmount = 0;
+    
 
     // Handle modal opening and fetching bus data
     $(document).on('click', '.openModalButton', function () {
@@ -20,6 +19,12 @@ $(document).ready(function () {
                     generateSeats(data);
                     $('.modal-header h5').text('');
                     $('.modal-title').text(data.busName);
+                    $('#destin').val('');
+                    $('#dropping').val('');
+                    $('#destin').val(data.pickupLocation);
+                    $('#dropping').val(data.dropLocation);
+                    let bookingDate =  $('#date').val();
+                    $('#bookingDate').val(bookingDate);
                 } else {
                     console.error('No matching bus found');
                 }
@@ -45,7 +50,7 @@ $(document).ready(function () {
         console.log("Columns: ", cols);
         console.log("Rows: ", rows);
         console.log("Sold seats: ", soldSeats);
-
+        
         for (let k = 0; k < rows; k++) {
             for (let j = 0; j < cols; j++) {
                 const seatNumber = k * cols + (j + 1);
@@ -59,32 +64,5 @@ $(document).ready(function () {
             }
         }
     }
-
-    // Handle seat selection
-    $('#seatingChart').on('click', '.seat.available', function () {
-        $(this).toggleClass('selected');
-        updateTotal();
-    });
-
-    // Update total amount based on selected seats
-    function updateTotal() {
-        const selectedSeats = $('.seat.selected').length;
-        totalAmount = selectedSeats * seatPrice;
-        $('#totalAmount').text(`TZS ${totalAmount.toFixed(2)}`);
-    }
-
-    // Handle reservation confirmation
-    $('#continueButton').on('click', function () {
-        const selectedSeats = [];
-        $('.seat.selected').each(function () {
-            selectedSeats.push($(this).data('seat'));
-            $(this).removeClass('selected').addClass('occupied');
-        });
-        if (selectedSeats.length > 0) {
-            alert('Reserved seats: ' + selectedSeats.join(', '));
-            $('#seatModal').modal('hide');
-        } else {
-            alert('No seats selected.');
-        }
-    });
+   
 });
