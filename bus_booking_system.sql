@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2024 at 02:50 PM
+-- Generation Time: Jul 28, 2024 at 09:19 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -31,11 +31,38 @@ CREATE TABLE `booking` (
   `id` int(11) NOT NULL,
   `customerName` varchar(255) NOT NULL,
   `customerNo` varchar(255) NOT NULL,
-  `RouteId` int(11) DEFAULT NULL,
   `busId` int(11) DEFAULT NULL,
-  `seatNumber` int(11) DEFAULT NULL,
+  `seatNumber` int(11) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`id`, `customerName`, `customerNo`, `busId`, `seatNumber`, `created_at`) VALUES
+(1, 'Hamidu', '0628435704', 1, 26, '2024-07-25 18:09:13'),
+(2, 'Hamidu', '0628435704', 1, 27, '2024-07-25 18:10:11'),
+(3, 'Hamidu', '0628435704', 1, 28, '2024-07-25 18:10:11'),
+(4, 'Dullah Omar', '0713694867', 1, 57, '2024-07-27 05:24:48');
+
+--
+-- Triggers `booking`
+--
+DELIMITER $$
+CREATE TRIGGER `updateAvailableSeats` AFTER INSERT ON `booking` FOR EACH ROW BEGIN
+    DECLARE T_b_seats INT;
+    
+    SELECT COUNT(*) INTO T_b_seats 
+    FROM Booking 
+    WHERE booking.busId = NEW.busId;
+    
+    UPDATE bus 
+    SET bus.bookedSeats = T_b_seats 
+    WHERE bus.id = NEW.busId;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -58,11 +85,13 @@ CREATE TABLE `bus` (
 --
 
 INSERT INTO `bus` (`id`, `busName`, `busNo`, `busModel`, `seatCapacity`, `bookedSeats`, `RouteId`) VALUES
-(1, 'Ratco Exp', 'T 267 EDF', '', 55, 0, 4),
-(2, 'Aboud Exp', 'T 337 EFF', '', 55, 0, 4),
-(3, 'Nacharo Express', 'T 287 DZZ', '', 56, 0, 4),
-(4, 'Achimwene Express', 'T 450 EPF', 'Youtong  F12 Plus', 50, 0, 9),
-(5, 'Achimwene Express', 'T 728 EPF', 'Youtong  F12 Plus', 50, 0, 10);
+(1, 'Ratco Exp', 'T 267 EDF', '', 57, 4, 4),
+(2, 'Aboud Exp', 'T 337 EFF', '', 57, 0, 4),
+(3, 'Nacharo Express', 'T 287 DZZ', '', 57, 0, 4),
+(4, 'Achimwene Express', 'T 450 EPF', 'Youtong  F12 Plus', 57, 0, 9),
+(5, 'Achimwene Express', 'T 728 EPF', 'Youtong  F12 Plus', 57, 0, 10),
+(6, 'Shabiby Express', 'T 545 EGG', 'ZHONGTONG', 57, 0, 8),
+(7, 'Shabiby Express', 'T 545 EGL', 'ZHONGTONG', 57, 0, 11);
 
 -- --------------------------------------------------------
 
@@ -88,7 +117,11 @@ INSERT INTO `bus_features` (`id`, `busId`, `feature`) VALUES
 (5, 4, 'Air Conditioning'),
 (6, 4, 'WiFi'),
 (7, 5, 'Air Conditioning'),
-(8, 5, 'WiFi');
+(8, 5, 'WiFi'),
+(9, 6, 'Air Conditioning'),
+(10, 6, 'WiFi'),
+(11, 7, 'Air Conditioning'),
+(12, 7, 'WiFi');
 
 -- --------------------------------------------------------
 
@@ -139,7 +172,8 @@ INSERT INTO `route` (`id`, `origin`, `destination`, `pickupLocation`, `dropLocat
 (7, 'Tanga', 'Dar Es Salam', 'Kange Stand', 'Mbezi Stand', 'Bagamoyo', '12:30:00', '17:30:00', 22000, 2),
 (8, 'Morogoro', 'Dodoma', 'Msamvu Stand', 'Dodoma Stand', 'Mdaula', '08:00:00', '12:00:00', 20000, 2),
 (9, 'Mbeya', 'Dar Es Salam', 'Stand Kuu', 'Mbezi Stand', 'Makambako', '05:30:00', '20:30:00', 45000, 1),
-(10, 'Mbeya', 'Dar Es Salam', 'Stand Kuu', 'Mbezi Stand', 'Makambako', '05:30:00', '20:30:00', 55000, 3);
+(10, 'Mbeya', 'Dar Es Salam', 'Stand Kuu', 'Mbezi Stand', 'Makambako', '05:30:00', '20:30:00', 55000, 3),
+(11, 'Dodoma', 'Dar Es Salam', 'Dodoma Stand', 'Mbezi Stand', 'Morogoro', '05:30:00', '17:30:00', 55000, 3);
 
 -- --------------------------------------------------------
 
@@ -149,17 +183,18 @@ INSERT INTO `route` (`id`, `origin`, `destination`, `pickupLocation`, `dropLocat
 
 CREATE TABLE `seat_type` (
   `id` int(11) NOT NULL,
-  `seatTypeName` varchar(255) NOT NULL
+  `seatTypeName` varchar(255) NOT NULL,
+  `columns` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `seat_type`
 --
 
-INSERT INTO `seat_type` (`id`, `seatTypeName`) VALUES
-(1, 'Luxury'),
-(2, 'Semi-Luxury'),
-(3, 'Vip');
+INSERT INTO `seat_type` (`id`, `seatTypeName`, `columns`) VALUES
+(1, 'Luxury', 4),
+(2, 'Semi-Luxury', 4),
+(3, 'Vip', 3);
 
 -- --------------------------------------------------------
 
@@ -191,7 +226,6 @@ INSERT INTO `users` (`id`, `username`, `roleID`, `pass`) VALUES
 --
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `RouteId` (`RouteId`),
   ADD KEY `busId` (`busId`);
 
 --
@@ -242,19 +276,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `bus`
 --
 ALTER TABLE `bus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `bus_features`
 --
 ALTER TABLE `bus_features`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -266,7 +300,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `route`
 --
 ALTER TABLE `route`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `seat_type`
@@ -288,7 +322,6 @@ ALTER TABLE `users`
 -- Constraints for table `booking`
 --
 ALTER TABLE `booking`
-  ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`RouteId`) REFERENCES `route` (`id`),
   ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`busId`) REFERENCES `bus` (`id`);
 
 --
